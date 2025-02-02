@@ -189,17 +189,27 @@ However, in a recommendation system, the goal is not to predict a category or a 
 
 Recommendation is based on similarities between users and items, rather than making a direct prediction about a target variable.
 The system predicts implicit preferences (like "how much would this user like this movie") based on existing data, not based on a predefined continuous target or category.
+
+
 2. Collaborative Filtering Approach:
 Instead of using regression or classification, you are using collaborative filtering because:
 
 Collaborative filtering focuses on utilizing the interactions between users and items, identifying patterns based on user behavior (what items they've rated or interacted with) or item similarity.
 Matrix factorization techniques like SVD (Singular Value Decomposition) decompose the user-item rating matrix into latent factors, helping to predict ratings for movies not yet seen by the user, which is not something you would achieve using a regression or classification approach.
+
+
 3. Implicit Data (Unseen Movies):
 In a classification or regression setting, you would typically have labeled data (i.e., every movie has a known rating from a user). However, with recommendation systems, you often deal with implicit feedback (e.g., a user rating a movie with 5 stars or not rating it at all). Predicting ratings for unseen movies or recommending the best movies requires learning patterns from the data without explicitly fitting a regression model or classification label.
+
+
 4. Cold Start Problem:
 In regression and classification algorithms, you'd require labeled training data for making predictions. However, in recommendation systems, there is a cold-start problem, especially when new users or new items (movies) enter the system. Collaborative filtering can still handle such issues better by leveraging similar users/items, whereas regression or classification models would need specific labeled data, making them less effective in the absence of data for new users/items.
+
+
 5. Scalability Issues:
 Regression and classification models typically assume the availability of direct input features (like user age, movie genre, etc.). In a recommendation system, if we applied a regression or classification model, we'd need to define features that directly correlate with the output variable (rating, preference), which could make the model more complex and less scalable. Collaborative filtering methods are more straightforward when you only have interaction data (user-item ratings) without the need for extensive feature engineering.
+
+
 In Summary:
 Regression and classification are supervised learning methods designed to predict a target variable (continuous or categorical). In contrast, recommendation systems like collaborative filtering aim to predict missing or unknown user-item interactions based on user behavior or item similarities, which doesn’t fit the typical structure of a regression or classification problem.
 
@@ -212,11 +222,15 @@ In your project:
 
 User and Movie IDs are typically represented as integers, and there's no need to convert them into a one-hot encoded or labeled form since you're dealing with a user-item matrix where each entry corresponds to the rating of a movie by a user.
 Genres of movies (if you were using them as features) could be encoded, but in the context of matrix factorization and collaborative filtering, such direct encoding is not necessary because the system is focusing on interactions (ratings) rather than explicit features of the movies or users.
+
+
 2. Missing Values:
 In typical supervised learning (e.g., classification or regression), missing values need to be handled because the model requires complete data to train. Common methods for handling missing values include:
 Imputation (filling in missing values with the mean, median, mode, or predicted values)
 Dropping missing values (removing rows/columns with missing values)
 In your recommendation system, the matrix factorization (e.g., SVD) technique you're using doesn't require you to fill in missing values manually. Instead, the model learns from the non-missing entries (user-movie ratings) and predicts the missing ones. The model can predict the missing ratings for the movies that users haven't rated yet, so there's no need to perform imputation or remove rows/columns with missing values as long as the data is sparse.
+
+
 
 3. How Collaborative Filtering Handles Missing Data:
 Collaborative filtering works by learning the patterns from the user-item interaction matrix (ratings matrix) that is typically sparse (many ratings are missing).
@@ -239,14 +253,15 @@ Why did you face NaN values during iterations?
 In the initial part of your project, during matrix factorization or the model's iterative process, you likely encountered NaN (Not a Number) values for several reasons:
 
 Sparse User-Item Matrix:
-
 The user-item matrix for movie ratings is typically sparse (most users don't rate most movies). Many entries are missing because users haven't rated certain movies.
 When training the model, operations like matrix multiplication or updating the parameters (user and movie matrices) could result in NaN values if the calculations involved dividing by zero or invalid operations due to missing data.
+
+
 Initial Parameterization:
-
 When you initialize matrices (e.g., user and movie latent factors) in matrix factorization, you may set them with some random values. If the model isn't correctly updated or if the learning rate is too high, it can lead to exploding or vanishing values, resulting in NaNs during the training.
-Gradient Descent Issues:
 
+
+Gradient Descent Issues:
 If you're using a gradient descent approach to optimize your model, incorrect parameter updates (like too large a learning rate) can cause NaN values in your matrices, especially during the backpropagation or update steps.
 How did the model handle NaN values?
 In matrix factorization, missing ratings (which are represented as NaN values) are not treated as missing data in the way they're handled in traditional classification or regression models. Instead, the model ignores the missing values and only learns from the observed ratings (non-NaN values).
@@ -254,7 +269,6 @@ In matrix factorization, missing ratings (which are represented as NaN values) a
 Here's how it works:
 
 Ignore NaNs in Calculations:
-
 When computing the predicted ratings for a user-item pair, the model focuses on observed ratings (those that have non-missing values) and avoids using the NaN values directly in the calculations. This is why NaNs don't disrupt the model's learning process in the same way they would in a classification or regression task, where each feature is expected to have a value for every instance.
 Matrix Factorization (SVD):
 

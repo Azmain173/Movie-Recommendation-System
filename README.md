@@ -69,6 +69,11 @@ Top recommended movies based on mean rating and more than 20 ratings:
 3499  2.853266     4.289062                192  Godfather, The (1972)
 3782  3.040849     4.288462                 26  Harold and Maude (1971)
 3011  3.845543     4.272936                218  Fight Club (1999)
+
+
+
+
+
 Things to Remember
 Data Preprocessing: Data cleaning and preprocessing (such as handling missing values and merging datasets) are crucial steps for building a robust recommendation system.
 Collaborative Filtering: This method works well when there are enough interactions (ratings) between users and items. If the dataset is sparse, matrix factorization might struggle to provide accurate predictions.
